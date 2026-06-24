@@ -4,8 +4,8 @@ A portable agent **skill** that turns a hardware budget into a concrete local-AI
 plan: exact GPUs, total VRAM, the open models you can run, realistic tokens/sec, and
 an upgrade path.
 
-Built from David Ondrej's interview with **0xSero** on running frontier open models
-at home.
+Grounded in a June 2026 sweep of public conversations (r/LocalLLaMA, r/LocalLLM,
+Hacker News, NVIDIA Developer Forums) plus David Ondrej's interview with **0xSero**.
 
 ## What it does
 
@@ -37,8 +37,9 @@ it reads your actual machine's specs and tells you the best 3 models to run righ
 
 ## Disclaimer
 
-Prices and model specs are planning anchors from the 0xSero podcast (late
-2025/2026). Hardware moves fast — verify current prices. Not financial advice.
+Prices and model specs are community-sourced market bands (June 2026 r/LocalLLaMA,
+HN, NVIDIA forums) plus the 0xSero podcast — directionally useful, not live quotes.
+Hardware and model tags move fast — verify before buying. Not financial advice.
 
 ## License
 
