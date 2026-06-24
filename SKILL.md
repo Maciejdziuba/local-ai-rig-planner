@@ -47,9 +47,23 @@ Prices and model tags move fast — always say so. Not financial advice.
 | $1,500–2,500 | Enthusiast | 2× RTX 5060 Ti 16GB, or 3090 + 64–128GB host RAM | 32GB split / 24GB+RAM | 27B–35B class, split-model experiments | Dual-card topology (PCIe width, P2P, tensor split) changes results; one 3090 is simpler |
 | $2,500–4,000 | Unified appliance | Framework Desktop / GMKtec EVO-X2 (Ryzen AI Max+ 395, 128GB), DGX Spark, or Mac Studio 96–128GB | 96–128GB unified | MoE models (Qwen3.6-35B-A3B, Gemma 26B-A4B); 70B-class with offload | Fits big models, slower dense gen. MoE is the sweet spot. Quiet, low-power, appliance-style |
 | $3,500–5,500 | Fast single-GPU | RTX 5090 32GB desktop (4090 24GB only if cheaper) | 32GB | Qwen3.6 27B / 35B-A3B at high speed, big KV cache | Fastest single-user coding box for fitted models. Still capped at 32GB |
-| $5,000–10,000 | Serious workstation | 2× RTX 3090 (48GB), or Mac Studio Ultra 256–512GB, or RTX A6000 / 6000 Ada 48GB | 48GB split / 256–512GB unified | Larger dense models, multi-agent, long context | Dual 3090 is 48GB *split*, not a seamless pool. Mac Ultra: capacity over raw speed |
+| $5,000–10,000 | Serious workstation | 2× RTX 3090 (48GB), or Mac Studio Ultra 256–512GB, or RTX A6000 / 6000 Ada 48GB | 48GB split / 256–512GB unified | Larger dense models, multi-agent, long context; **GLM 5.2 2-bit GGUF** on a 256GB Mac Studio (slow, compromised) | Dual 3090 is 48GB *split*, not a seamless pool. Mac Ultra: capacity over raw speed — the cheapest door to local GLM 5.2 |
 | $10,000–25,000 | Pro single-box | RTX PRO 6000 Blackwell / RTX 6000 96GB + 128–256GB RAM, Linux, vLLM/SGLang | 96GB | Qwen3.6 27B Q8 @ 256k context, 70B–80B class, ~8 concurrent sessions | 5090-class speed with far more VRAM; much simpler than stitching consumer cards |
-| $25,000–50,000 | Lab / team | 2–4× RTX PRO 6000 96GB on EPYC/Threadripper Pro, 256–512GB+ RAM | 192–384GB | Many concurrent agents, fine-tuning, high utilization | No longer a hobby rig — only worth it when privacy/latency/volume justify ownership. Consumer sockets lack PCIe lanes for clean 3–4 GPU builds |
+| $25,000–50,000 | Lab / team | 2–4× RTX PRO 6000 96GB on EPYC/Threadripper Pro, 256–512GB+ RAM, or a multi-node GB10/DGX Spark cluster | 192–384GB | Many concurrent agents, fine-tuning, high utilization; **GLM 5.2 Q4/IQ4 GGUF** (~365–467GB across nodes, ~6 tok/s on 4× GB10) | No longer a hobby rig — only worth it when privacy/latency/volume justify ownership. Consumer sockets lack PCIe lanes for clean 3–4 GPU builds |
+
+## Frontier local: GLM 5.2
+
+GLM 5.2 (~753B params) is a real *local* option, but its story starts at **hundreds
+of GB of memory**, not 24–32GB VRAM. Plan around the GGUF sizes: 1-bit ~217–228GB,
+2-bit ~238–254GB, Q4 ~365–467GB, BF16 ~1.51TB. Practical doors:
+
+- **256GB Mac Studio (~$5–10k):** 2-bit GGUF — the cheapest local entry, slow.
+- **4× GB10 / DGX Spark cluster, or 4–8× RTX 6000 ($25k+):** Q4/IQ4 with distributed
+  serving (a documented 4-node GB10 recipe runs UD-IQ4_XS at ~6.28 tok/s).
+
+If someone only wants GLM 5.2, the spend jumps a tier — don't pretend a 128GB
+appliance runs it well. And note: `ollama run glm-5.2:cloud` is cloud-routed, **not**
+local — for local use pull `unsloth/GLM-5.2-GGUF` via llama.cpp / LM Studio / Ollama.
 
 ## Shortlist by use case
 
